@@ -19,7 +19,7 @@ const listWithOneBlog = [
   },
 ];
 
-const blogs = [
+const biggerListOfBlogs = [
   {
     _id: "5a422a851b54a676234d17f7",
     title: "React patterns",
@@ -74,25 +74,25 @@ const blogs = [
 ];
 
 describe("total likes", () => {
-  test("of empty list is zero", () => {
+  test("of an empty list is zero", () => {
     expect(listHelper.totalLikes([])).toBe(0);
   });
 
-  test("when list has only one blog, equals the likes of that", () => {
+  test("when the list has only one blog, equals to the likes of that", () => {
     expect(listHelper.totalLikes(listWithOneBlog)).toBe(5);
   });
 
   test("of a bigger list is calculated right", () => {
-    expect(listHelper.totalLikes(blogs)).toBe(36);
+    expect(listHelper.totalLikes(biggerListOfBlogs)).toBe(36);
   });
 });
 
 describe("favorite blog", () => {
-  test("of empty list is null", () => {
+  test("of an empty list is null", () => {
     expect(listHelper.favoriteBlog([])).toBe(null);
   });
 
-  test("when list has only one blog, equals that blog", () => {
+  test("when the list has only one blog, equals to that blog", () => {
     const expectedResult = {
       _id: "5a422aa71b54a676234d17f8",
       title: "Go To Statement Considered Harmful",

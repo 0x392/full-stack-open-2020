@@ -23,7 +23,7 @@ mongoose
     useCreateIndex: true,
   })
   .then(() => logger.info("(MongoDB) Connected"))
-  .catch((error) => logger.error(error));
+  .catch((error) => logger.error("Error connecting to MongoDB", error.message));
 
 app.use(express.json());
 app.use(requestLogger);

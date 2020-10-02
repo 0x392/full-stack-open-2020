@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const logger = require("./utils/logger");
 
 const app = express();
 
@@ -14,6 +15,7 @@ const blogSchema = new mongoose.Schema({
 const Blog = mongoose.model("Blog", blogSchema);
 
 const mongoUrl = process.env.MONGODB_URI;
+logger.info(`(MongoDB) Connecting to ${mongoUrl}`);
 mongoose
   .connect(mongoUrl, {
     useNewUrlParser: true,
@@ -21,8 +23,8 @@ mongoose
     useFindAndModify: false,
     useCreateIndex: true,
   })
-  .then(() => console.log("connected"))
-  .catch((error) => console.error(error));
+  .then(() => logger.info("(MongoDB) Connected"))
+  .catch((error) => logger.error(error));
 
 app.use(express.json());
 

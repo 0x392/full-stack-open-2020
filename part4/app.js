@@ -1,6 +1,6 @@
-require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const config = require("./utils/config");
 const logger = require("./utils/logger");
 
 const app = express();
@@ -14,10 +14,9 @@ const blogSchema = new mongoose.Schema({
 
 const Blog = mongoose.model("Blog", blogSchema);
 
-const mongoUrl = process.env.MONGODB_URI;
-logger.info(`(MongoDB) Connecting to ${mongoUrl}`);
+logger.info(`(MongoDB) Connecting to ${config.MONGODB_URI}`);
 mongoose
-  .connect(mongoUrl, {
+  .connect(config.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

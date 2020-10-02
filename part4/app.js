@@ -1,18 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const Blog = require("./models/blog");
 const config = require("./utils/config");
 const logger = require("./utils/logger");
 
 const app = express();
-
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number,
-});
-
-const Blog = mongoose.model("Blog", blogSchema);
 
 logger.info(`(MongoDB) Connecting to ${config.MONGODB_URI}`);
 mongoose

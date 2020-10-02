@@ -17,6 +17,7 @@ mongoose
   .then(() => logger.info("(MongoDB) Connected"))
   .catch((error) => logger.error("Error connecting to MongoDB", error.message));
 
+app.use(express.static("build"));
 app.use(express.json());
 app.use(middleware.requestLogger);
 

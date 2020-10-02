@@ -125,6 +125,8 @@ const App = () => {
               content: `The number of ${newName} is changed`,
             });
             setTimeout(() => setMessage(null), 2500);
+            setNewName("");
+            setNewNumber("");
           })
           .catch((error) => {
             setMessage({
@@ -133,8 +135,6 @@ const App = () => {
             });
             setTimeout(() => setMessage(null), 2500);
           });
-        setNewName("");
-        setNewNumber("");
       }
     } else {
       const personObject = { name: newName, number: newNumber };

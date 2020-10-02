@@ -116,6 +116,6 @@ describe("favorite blog", () => {
       __v: 0,
     };
 
-    expect(listHelper.favoriteBlog(blogs)).toEqual(expectedResult);
+    expect(listHelper.favoriteBlog(biggerListOfBlogs)).toEqual(expectedResult);
   });
 });

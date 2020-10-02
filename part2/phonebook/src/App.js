@@ -131,20 +131,29 @@ const App = () => {
           .catch((error) => {
             setMessage({
               type: "unsuccessful",
-              content: `Information of ${newName} has already been removed from server`,
+              content: error.response.data.error,
             });
             setTimeout(() => setMessage(null), 2500);
           });
       }
     } else {
       const personObject = { name: newName, number: newNumber };
-      personService.create(personObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setMessage({ type: "successful", content: `Added ${newName}` });
-        setTimeout(() => setMessage(null), 2500);
-        setNewName("");
-        setNewNumber("");
-      });
+      personService
+        .create(personObject)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setMessage({ type: "successful", content: `Added ${newName}` });
+          setTimeout(() => setMessage(null), 2500);
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((error) => {
+          setMessage({
+            type: "unsuccessful",
+            content: error.response.data.error,
+          });
+          setTimeout(() => setMessage(null), 2500);
+        });
     }
   }
 

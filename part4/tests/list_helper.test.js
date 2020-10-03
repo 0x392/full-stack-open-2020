@@ -143,3 +143,27 @@ describe("most blogs", () => {
     expect(listHelper.mostBlogs(biggerListOfBlogs)).toEqual(expectedResult);
   });
 });
+
+describe("most likes", () => {
+  test("of an empty list is null", () => {
+    expect(listHelper.mostLikes([])).toBe(null);
+  });
+
+  test("when the list has only one blog, equals to an object containing the author who has most likes and the number of likes", () => {
+    const expectedResult = {
+      author: "Edsger W. Dijkstra",
+      likes: 5,
+    };
+
+    expect(listHelper.mostLikes(listWithOneBlog)).toEqual(expectedResult);
+  });
+
+  test("of a bigger list is calculated right", () => {
+    const expectedResult = {
+      author: "Edsger W. Dijkstra",
+      likes: 17,
+    };
+
+    expect(listHelper.mostLikes(biggerListOfBlogs)).toEqual(expectedResult);
+  });
+});

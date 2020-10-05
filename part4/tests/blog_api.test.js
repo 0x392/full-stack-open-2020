@@ -38,6 +38,30 @@ describe("Get all blogs", () => {
   });
 });
 
+describe("Create a new blog", () => {
+  // Exercise 4.10
+  test("successfully with a valid data", async () => {
+    const newBlog = {
+      title: "What's Happened, Happened",
+      author: "Neil",
+      url: "https://tenetquotes.com/neil",
+      likes: 11,
+    };
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+
+    const blogsAtEnd = await helper.getBlogsInDb();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+
+    const titles = blogsAtEnd.map((blog) => blog.title);
+    expect(titles).toContain("What's Happened, Happened");
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });

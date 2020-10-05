@@ -14,7 +14,7 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 });
 
-describe("Get all blogs", () => {
+describe("Getting all blogs", () => {
   // Exercise 4.8 - 1
   test("returns correct amount of blogs", async () => {
     const response = await api.get("/api/blogs");
@@ -22,7 +22,7 @@ describe("Get all blogs", () => {
   });
 
   // Exercise 4.8 - 2
-  test("returned blogs are in JSON format", async () => {
+  test("returns blogs in JSON format", async () => {
     await api
       .get("/api/blogs")
       .expect(200)
@@ -30,7 +30,7 @@ describe("Get all blogs", () => {
   });
 
   // Exercise 4.9
-  test("returned blogs have property `id` and not `_id`", async () => {
+  test("returns blogs having property `id` and not `_id`", async () => {
     const blogsAtStart = await helper.getBlogsInDb();
     for (let i = 0; i < blogsAtStart.length; i++) {
       let blog = blogsAtStart[i];
@@ -40,7 +40,7 @@ describe("Get all blogs", () => {
   });
 });
 
-describe("Create a new blog", () => {
+describe("Creating a new blog", () => {
   // Exercise 4.10
   test("successfully with a valid data", async () => {
     const newBlog = {
@@ -64,7 +64,7 @@ describe("Create a new blog", () => {
   });
 
   // Exercise 4.11
-  test("`like` property will default to 0 if it's missing from the request", async () => {
+  test("if `like` property is missing from the request, it defaults to 0 ", async () => {
     const newBlog = {
       title: "What's Happened, Happened",
       author: "Neil",
@@ -93,6 +93,20 @@ describe("Create a new blog", () => {
     };
 
     await api.post("/api/blogs").send(newBlog).expect(400);
+  });
+});
+
+describe("Deletion of a blog", () => {
+  test("succeeds with 204 if id is valid", async () => {
+    const blogAtStart = await helper.getBlogsInDb();
+    const blogToDelete = blogAtStart[0];
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+    const blogsAtEnd = await helper.getBlogsInDb();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+
+    const titles = blogsAtEnd.map((blog) => blog.title);
+    expect(titles).not.toContain(blogToDelete.title);
   });
 });
 

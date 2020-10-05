@@ -110,6 +110,22 @@ describe("Deletion of a blog", () => {
   });
 });
 
+describe("Update of a blog", () => {
+  test("succeeds with 200 if it's valid", async () => {
+    const blogAtStart = await helper.getBlogsInDb();
+    const blogToUpdate = blogAtStart[0];
+    blogToUpdate.title = "I'll See You in the Beginning";
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(blogToUpdate)
+      .expect(200);
+
+    const blogsAtEnd = await helper.getBlogsInDb();
+    expect(blogsAtEnd[0].title).toBe(blogToUpdate.title);
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });

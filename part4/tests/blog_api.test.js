@@ -15,16 +15,26 @@ beforeEach(async () => {
 });
 
 describe("Get all blogs", () => {
-  test("returns correct amount of blog posts", async () => {
+  // Exercise 4.8 - 1
+  test("returns correct amount of blogs", async () => {
     const response = await api.get("/api/blogs");
     expect(response.body).toHaveLength(helper.initialBlogs.length);
   });
 
-  test("returns blog posts in JSON format", async () => {
+  // Exercise 4.8 - 2
+  test("returned blogs are in JSON format", async () => {
     await api
       .get("/api/blogs")
       .expect(200)
       .expect("Content-Type", /application\/json/);
+  });
+
+  // Exercise 4.9
+  test("returned blogs have property `id` and not `_id`", async () => {
+    const blogsAtStart = await helper.getBlogsInDb();
+    const firstBlog = blogsAtStart[0];
+    expect(firstBlog.id).toBeDefined();
+    expect(firstBlog._id).not.toBeDefined();
   });
 });
 

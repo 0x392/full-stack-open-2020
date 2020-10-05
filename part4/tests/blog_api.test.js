@@ -32,9 +32,11 @@ describe("Get all blogs", () => {
   // Exercise 4.9
   test("returned blogs have property `id` and not `_id`", async () => {
     const blogsAtStart = await helper.getBlogsInDb();
-    const firstBlog = blogsAtStart[0];
-    expect(firstBlog.id).toBeDefined();
-    expect(firstBlog._id).not.toBeDefined();
+    for (let i = 0; i < blogsAtStart.length; i++) {
+      let blog = blogsAtStart[i];
+      expect(blog.id).toBeDefined();
+      expect(blog._id).not.toBeDefined();
+    }
   });
 });
 

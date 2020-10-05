@@ -62,6 +62,38 @@ describe("Create a new blog", () => {
     const titles = blogsAtEnd.map((blog) => blog.title);
     expect(titles).toContain("What's Happened, Happened");
   });
+
+  // Exercise 4.11
+  test("`like` property will default to 0 if it's missing from the request", async () => {
+    const newBlog = {
+      title: "What's Happened, Happened",
+      author: "Neil",
+      url: "https://tenetquotes.com/neil",
+    };
+
+    const response = await api.post("/api/blogs").send(newBlog);
+    expect(response.body.likes).toBe(0);
+  });
+
+  // Exercise 4.12 - 1
+  test("responds with 400 if the `title` property is missing", async () => {
+    const newBlog = {
+      author: "Neil",
+      url: "https://tenetquotes.com/neil",
+    };
+
+    await api.post("/api/blogs").send(newBlog).expect(400);
+  });
+
+  // Exercise 4.12 - 2
+  test("responds with 400 if the `url` property is missing", async () => {
+    const newBlog = {
+      title: "What's Happened, Happened",
+      author: "Neil",
+    };
+
+    await api.post("/api/blogs").send(newBlog).expect(400);
+  });
 });
 
 afterAll(() => {

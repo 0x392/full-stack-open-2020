@@ -6,7 +6,7 @@ const config = require("./utils/config");
 const logger = require("./utils/logger");
 const middleware = require("./utils/middleware");
 
-logger.info(`(MongoDB) Connecting to ${config.MONGODB_URI}`);
+logger.info(`(MongoDB) Connect to ${config.MONGODB_URI}`);
 mongoose
   .connect(config.MONGODB_URI, {
     useNewUrlParser: true,
@@ -15,7 +15,7 @@ mongoose
     useCreateIndex: true,
   })
   .then(() => logger.info("(MongoDB) Connected"))
-  .catch((error) => logger.error("Error connecting to MongoDB", error.message));
+  .catch((error) => logger.error("(MongoDB) Connection error", error.message));
 
 app.use(express.static("build"));
 app.use(express.json());

@@ -55,8 +55,9 @@ const initialBlogs = [
 ];
 
 const getBlogsInDb = async () => {
-  const blogs = await Blog.find({});
-  return blogs.map((blog) => blog.toJSON());
+  const blogModels = await Blog.find({});
+  // Calling `toJSON` to remove `_id` and `__v` fields
+  return blogModels.map((blog) => blog.toJSON());
 };
 
 module.exports = { initialBlogs, getBlogsInDb };

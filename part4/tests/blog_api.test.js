@@ -9,8 +9,8 @@ const api = supertest(app);
 beforeEach(async () => {
   await Blog.deleteMany({});
 
-  const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog));
-  const promiseArray = blogObjects.map((blog) => blog.save());
+  const blogModels = helper.initialBlogs.map((blog) => new Blog(blog));
+  const promiseArray = blogModels.map((blog) => blog.save());
   await Promise.all(promiseArray);
 });
 
@@ -30,7 +30,7 @@ describe("Getting all blogs", () => {
   });
 
   // Exercise 4.9
-  test("returns blogs having property `id` and not `_id`", async () => {
+  test("returns blogs with property `id` and without `_id`", async () => {
     const blogsAtStart = await helper.getBlogsInDb();
     for (let i = 0; i < blogsAtStart.length; i++) {
       let blog = blogsAtStart[i];
@@ -64,7 +64,7 @@ describe("Creating a new blog", () => {
   });
 
   // Exercise 4.11
-  test("if `like` property is missing from the request, it defaults to 0 ", async () => {
+  test("if `like` property is missing from the request, it defaults to 0", async () => {
     const newBlog = {
       title: "What's Happened, Happened",
       author: "Neil",
@@ -97,7 +97,7 @@ describe("Creating a new blog", () => {
 });
 
 describe("Deletion of a blog", () => {
-  test("succeeds with 204 if id is valid", async () => {
+  test("succeeds with status code 204 when `id` is valid", async () => {
     const blogAtStart = await helper.getBlogsInDb();
     const blogToDelete = blogAtStart[0];
     await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
@@ -110,8 +110,8 @@ describe("Deletion of a blog", () => {
   });
 });
 
-describe("Update of a blog", () => {
-  test("succeeds with 200 if it's valid", async () => {
+describe.only("Update of a blog", () => {
+  test("succeeds with status code 200 for a valid request", async () => {
     const blogAtStart = await helper.getBlogsInDb();
     const blogToUpdate = blogAtStart[0];
     blogToUpdate.title = "I'll See You in the Beginning";
@@ -121,8 +121,8 @@ describe("Update of a blog", () => {
       .send(blogToUpdate)
       .expect(200);
 
-    const blogsAtEnd = await helper.getBlogsInDb();
-    expect(blogsAtEnd[0].title).toBe(blogToUpdate.title);
+    const updatedBlog = await Blog.findById(blogToUpdate.id);
+    expect(updatedBlog).toBe(blogToUpdate.title);
   });
 });
 

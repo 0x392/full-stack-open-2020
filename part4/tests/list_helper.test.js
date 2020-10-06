@@ -1,12 +1,5 @@
 const listHelper = require("../utils/list_helper");
 
-test("dummy returns one", () => {
-  const blogs = [];
-  const result = listHelper.dummy(blogs);
-
-  expect(result).toBe(1);
-});
-
 const listWithOneBlog = [
   {
     _id: "5a422aa71b54a676234d17f8",
@@ -73,12 +66,16 @@ const biggerListOfBlogs = [
   },
 ];
 
+test("dummy returns one", () => {
+  expect(listHelper.dummy([])).toBe(1);
+});
+
 describe("total likes", () => {
   test("of an empty list is zero", () => {
     expect(listHelper.totalLikes([])).toBe(0);
   });
 
-  test("when the list has only one blog, equals to the likes of that", () => {
+  test("when the list has only one blog, equals to the likes of that blog", () => {
     expect(listHelper.totalLikes(listWithOneBlog)).toBe(5);
   });
 
@@ -125,7 +122,7 @@ describe("most blogs", () => {
     expect(listHelper.mostBlogs([])).toBe(null);
   });
 
-  test("when the list has only one blog, equals to an object containing author information of that blog and a blogs property with value 1", () => {
+  test("when the list has only one blog, equals to { author: <author-of-that-blog>, blogs: 1 }", () => {
     const expectedResult = {
       author: "Edsger W. Dijkstra",
       blogs: 1,
@@ -149,7 +146,7 @@ describe("most likes", () => {
     expect(listHelper.mostLikes([])).toBe(null);
   });
 
-  test("when the list has only one blog, equals to an object containing the author who has most likes and the number of likes", () => {
+  test("when the list has only one blog, equals to { author: <author-with-most-likes, likes: <number-of-likes> }", () => {
     const expectedResult = {
       author: "Edsger W. Dijkstra",
       likes: 5,

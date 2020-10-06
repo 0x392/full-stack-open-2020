@@ -1,35 +1,36 @@
 // Receives an array of blog posts as a parameter
-const dummy = (blogs) => 1;
+const dummy = (_blogs) => 1;
 
 const totalLikes = (blogs) => blogs.reduce((sum, blog) => sum + blog.likes, 0);
 
 const favoriteBlog = (blogs) => {
-  let mostLikesCount = 0;
-  let mostLikesIdx = 0;
+  const mostLikes = { count: 0, blogIdx: 0 };
 
-  blogs.forEach((blog, i) => {
-    if (blog.likes > mostLikesCount) {
-      mostLikesCount = blog.likes;
-      mostLikesIdx = i;
+  blogs.forEach((blog, idx) => {
+    if (blog.likes > mostLikes.count) {
+      mostLikes.count = blog.likes;
+      mostLikes.blogIdx = idx;
     }
   });
 
-  return blogs.length === 0 ? null : blogs[mostLikesIdx];
+  return blogs.length === 0 ? null : blogs[mostLikes.blogIdx];
 };
 
+// Returns the author who has most blog posts
 const mostBlogs = (blogs) => {
-  const blogsNum = {};
+  // Mapping author to its number of blog posts
+  const blogsNumDict = {};
   let mostBlogsNum = 0;
   let result = null;
 
   blogs.forEach(({ author }) => {
-    if (blogsNum[author]) blogsNum[author] += 1;
-    else blogsNum[author] = 1;
+    if (blogsNumDict[author]) blogsNumDict[author] += 1;
+    else blogsNumDict[author] = 1;
   });
 
-  for (author in blogsNum) {
-    if (blogsNum[author] > mostBlogsNum) {
-      mostBlogsNum = blogsNum[author];
+  for (let author in blogsNumDict) {
+    if (blogsNumDict[author] > mostBlogsNum) {
+      mostBlogsNum = blogsNumDict[author];
       result = { author, blogs: mostBlogsNum };
     }
   }
@@ -37,19 +38,20 @@ const mostBlogs = (blogs) => {
   return result;
 };
 
+// Returns the author who has most likes
 const mostLikes = (blogs) => {
-  const likesNum = {};
+  const likesNumDict = {};
   let mostLikesNum = 0;
   let result = null;
 
   blogs.forEach(({ author, likes }) => {
-    if (likesNum[author]) likesNum[author] += likes;
-    else likesNum[author] = likes;
+    if (likesNumDict[author]) likesNumDict[author] += likes;
+    else likesNumDict[author] = likes;
   });
 
-  for (author in likesNum) {
-    if (likesNum[author] > mostLikesNum) {
-      mostLikesNum = likesNum[author];
+  for (let author in likesNumDict) {
+    if (likesNumDict[author] > mostLikesNum) {
+      mostLikesNum = likesNumDict[author];
       result = { author, likes: mostLikesNum };
     }
   }

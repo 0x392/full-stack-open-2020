@@ -3,6 +3,7 @@ const app = require("../app");
 const helper = require("./test_helper");
 const mongoose = require("mongoose");
 const Blog = require("../models/blog");
+const User = require("../models/user");
 
 const api = supertest(app);
 
@@ -61,7 +62,7 @@ describe("there are initially some blog posts", () => {
       expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
 
       const titles = blogsAtEnd.map((blog) => blog.title);
-      expect(titles).toContain("What's Happened, Happened");
+      expect(titles).toContain(newBlog.title);
     });
 
     // Exercise 4.11
@@ -125,6 +126,126 @@ describe("there are initially some blog posts", () => {
       const updatedBlog = await Blog.findById(blogToUpdate.id);
       expect(updatedBlog.title).toBe(blogToUpdate.title);
     });
+  });
+});
+
+describe("Creating a new user", () => {
+  beforeEach(async () => {
+    await User.deleteMany({});
+
+    const userModels = helper.initialUsers.map((user) => new User(user));
+    const promiseArray = userModels.map((user) => user.save());
+    await Promise.all(promiseArray);
+  });
+
+  test("successfully with a valid data", async () => {
+    const usersAtStart = await helper.getUsersInDb();
+
+    const newUser = {
+      username: "some_username",
+      password: "secret",
+      name: "Alice",
+    };
+
+    await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+
+    const usersAtEnd = await helper.getUsersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1);
+
+    const usernames = usersAtEnd.map((user) => user.username);
+    expect(usernames).toContain(newUser.username);
+  });
+
+  test("fails with status code 400 and proper message if username is not given", async () => {
+    const newUser = {
+      password: "secret",
+      name: "Alice",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain("`username` is required");
+  });
+
+  test("fails with status code 400 and proper message if username is less than 3 characters", async () => {
+    const newUser = {
+      username: "hi",
+      password: "secret",
+      name: "Alice",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain("username");
+    expect(result.body.error).toContain(
+      "shorter than the minimum allowed length (3)"
+    );
+  });
+
+  test("fails with status code 400 and proper message if password is not given", async () => {
+    const newUser = {
+      username: "some_username",
+      name: "Alice",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain("`password` is required");
+  });
+
+  test("fails with status code 400 and proper message if password is less than 3 characters", async () => {
+    const newUser = {
+      username: "some_username",
+      password: "hi",
+      name: "Alice",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain(
+      "password is shorter than the minimum allowed length (3)"
+    );
+  });
+
+  test("fails with status code 400 and proper message if username is already taken", async () => {
+    const usersAtStart = await helper.getUsersInDb();
+
+    const newUser = {
+      username: "username_1",
+      password: "secret",
+      name: "Alice",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain("`username` to be unique");
+
+    const usersAtEnd = await helper.getUsersInDb();
+    expect(usersAtEnd).toHaveLength(usersAtStart.length);
   });
 });
 

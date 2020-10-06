@@ -1,4 +1,5 @@
 const Blog = require("../models/blog");
+const User = require("../models/user");
 
 const initialBlogs = [
   {
@@ -54,10 +55,27 @@ const initialBlogs = [
   },
 ];
 
+const initialUsers = [
+  {
+    _id: "5f7c9a44d24deda40a7e4d68",
+    username: "username_1",
+    passwordHash:
+      "$2b$10$3yZMTAanb8yuTzlyo1K/4uimecdI1pe2oCEF1PpoxWKt6cV/PnAF.",
+    name: "name_1",
+    __v: 0,
+  },
+];
+
 const getBlogsInDb = async () => {
   const blogModels = await Blog.find({});
   // Calling `toJSON` to remove `_id` and `__v` fields
   return blogModels.map((blog) => blog.toJSON());
 };
 
-module.exports = { initialBlogs, getBlogsInDb };
+const getUsersInDb = async () => {
+  const userModels = await User.find({});
+  // Calling `toJSON` to remove `passwordHash`, `_id` and `__v` fields
+  return userModels.map((user) => user.toJSON());
+};
+
+module.exports = { initialBlogs, getBlogsInDb, initialUsers, getUsersInDb };

@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const blogsRouter = require("./controllers/blogs");
 const usersRouter = require("./controllers/users");
 const mongoose = require("mongoose");
@@ -18,6 +19,7 @@ mongoose
   .then(() => logger.info("(MongoDB) Connected"))
   .catch((error) => logger.error("(MongoDB) Connection error", error.message));
 
+app.use(cors);
 app.use(express.static("build"));
 app.use(express.json());
 app.use(middleware.requestLogger);

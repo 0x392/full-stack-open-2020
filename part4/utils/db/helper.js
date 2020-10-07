@@ -5,10 +5,17 @@ const User = require("../../models/user");
 const Blog = require("../../models/blog");
 const initData = require("./init_data");
 const axios = require("axios");
-// // const blog = require("../../models/blog");
+const fs = require("fs");
+const path = require("path");
 
-const apiEndpoint = (endpoint) =>
-  `http://localhost:${config.PORT}/api/${endpoint}`;
+const utils = {
+  apiEndpoint: function (endpoint) {
+    return `http://localhost:${config.PORT}/api/${endpoint}`;
+  },
+  credentialString: function (user) {
+    return `bearer ${user.token}`;
+  },
+};
 
 const db = {
   connect: async function () {
@@ -27,6 +34,7 @@ const db = {
   clear: async function () {
     await User.deleteMany({});
     console.log("collection `users` cleared");
+
     await Blog.deleteMany({});
     console.log("collection `blogs` cleared");
   },
@@ -34,21 +42,53 @@ const db = {
 
 const model = {
   data: initData,
-  saveUsers: async function () {
-    for (let i = 0; i < this.data.users.length; i++) {
-      const user = this.data.users[i];
-      const newUser = _.pick(user, ["username", "password", "name"]);
-      const response = await axios.post(apiEndpoint("users"), newUser);
-      console.log(`user \`${user.name}\` saved`);
-    }
+  dumpData: function (filename) {
+    const savePath = path.join(__dirname, filename);
+    fs.writeFileSync(savePath, JSON.stringify(this.data, null, 2));
+    console.log(`${filename} saved`);
   },
+  saveUsers: async function () {
+    const promiseArray = this.data.users.map((user) => {
+      const newUser = _.pick(user, ["username", "password", "name"]);
+      return axios.post(utils.apiEndpoint("users"), newUser);
+    });
+
+    const responses = await Promise.all(promiseArray);
+    responses.forEach(({ data }, i) => {
+      this.data.users[i].id = data.id;
+      console.log(`user "${data.name}" saved`);
+    });
+
+    console.log("all users saved");
+  },
+  loginAndGetTokens: async function () {
+    const promiseArray = this.data.users.map((user) => {
+      const loginInfo = _.pick(user, ["username", "password"]);
+      return axios.post(utils.apiEndpoint("login"), loginInfo);
+    });
+
+    const responses = await Promise.all(promiseArray);
+    responses.forEach(({ data }, i) => (this.data.users[i].token = data.token));
+
+    console.log("all tokens extracted");
+  },
+  // Note that we can't use `Promise.all` here, because there are more than one
+  // requests trying to update the user document; therefore we use for loop
+  // here, making requests sequentially
   saveBlogs: async function () {
     for (let i = 0; i < this.data.blogs.length; i++) {
       const blog = this.data.blogs[i];
       const newBlog = _.pick(blog, ["title", "author", "url", "likes"]);
-      const response = await axios.post(apiEndpoint("blogs"), newBlog);
-      console.log(`blog \`${blog.title}\` saved`);
+      const randomUser = _.sample(this.data.users);
+      const { data } = await axios.post(utils.apiEndpoint("blogs"), newBlog, {
+        headers: { Authorization: utils.credentialString(randomUser) },
+      });
+      this.data.blogs[i].id = data.id;
+      this.data.blogs[i].user = data.user;
+      console.log(`blog \`${data.title}\` saved`);
     }
+
+    console.log("all blogs saved");
   },
 };
 

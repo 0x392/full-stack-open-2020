@@ -1,40 +1,46 @@
 const users = [
   {
-    username: "username_1",
-    password: "password_1",
-    name: "name_1",
+    username: "mock_username_1",
+    password: "mock_password_1",
+    name: "mock_name_1",
   },
   {
-    username: "username_2",
-    password: "password_2",
-    name: "name_2",
+    username: "mock_username_2",
+    password: "mock_password_2",
+    name: "mock_name_2",
   },
 ];
 
 const blogs = [
   {
-    title: "React patterns",
-    author: "Michael Chan",
-    url: "https://reactpatterns.com/",
+    title: "mock_title_1",
+    author: "mock_user_1",
+    url: "https://mockurl1.io/",
+    likes: 2,
+  },
+  {
+    title: "mock_title_2",
+    author: "mock_user_2",
+    url: "https://mockurl2.io/",
+    likes: 3,
+  },
+  {
+    title: "mock_title_3",
+    author: "mock_user_3",
+    url: "https://mockurl3.io/",
+    likes: 5,
+  },
+  {
+    title: "mock_title_4",
+    author: "mock_user_4",
+    url: "https://mockurl4.io/",
     likes: 7,
   },
   {
-    title: "Canonical string reduction",
-    author: "Edsger W. Dijkstra",
-    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-    likes: 12,
-  },
-  {
-    title: "TDD harms architecture",
-    author: "Robert C. Martin",
-    url: "http://blog.cleancoder.com/2017/03/03/TDD-Harms-Architecture.html",
-    likes: 0,
-  },
-  {
-    title: "Type wars",
-    author: "Robert C. Martin",
-    url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-    likes: 2,
+    title: "mock_title_5",
+    author: "mock_user_5",
+    url: "https://mockurl5.io/",
+    likes: 11,
   },
 ];
 

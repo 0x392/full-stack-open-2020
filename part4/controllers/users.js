@@ -8,8 +8,8 @@ usersRouter.get("/", async (_request, response) => {
 });
 
 usersRouter.post("/", async (request, response, next) => {
-  console.log(1);
   const body = request.body;
+
   if (!body.password)
     return response.status(400).send({ error: "`password` is required" });
   if (body.password.length < 3)

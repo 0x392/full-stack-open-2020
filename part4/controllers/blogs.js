@@ -17,26 +17,45 @@ blogsRouter.post("/", async (request, response, next) => {
     return response.status(400).send({ error: "blog url missing" });
   }
 
-  const token = request.token;
+  try {
+    const token = request.token;
+    const decodedToken = await jwt.verify(token, process.env.SECRET);
 
-  const decodedToken = await jwt.verify(token, process.env.SECRET);
-  if (!token || !decodedToken) {
-    return response.status(401).send({ error: "token missing or invalid" });
+    if (!token || !decodedToken) {
+      return response.status(401).send({ error: "token missing or invalid" });
+    }
+
+    const user = await User.findById(decodedToken.id);
+    const blog = new Blog({ ...body, user: user._id });
+    const savedBlog = await blog.save();
+
+    user.blogs = await user.blogs.concat(savedBlog._id);
+    await user.save();
+
+    response.status(201).json(savedBlog);
+  } catch (error) {
+    return next(error);
   }
-
-  const user = await User.findById(decodedToken.id);
-  const blog = new Blog({ ...body, user: user._id });
-  const savedBlog = await blog.save();
-
-  user.blogs = await user.blogs.concat(savedBlog._id);
-  await user.save();
-
-  response.status(201).json(savedBlog);
 });
 
-blogsRouter.delete("/:id", async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id);
-  response.status(204).end();
+blogsRouter.delete("/:id", async (request, response, next) => {
+  try {
+    const token = request.token;
+    const decodedToken = await jwt.verify(token, process.env.SECRET);
+    if (!token || !decodedToken) {
+      return response.status(401).send({ error: "token missing or invalid" });
+    }
+
+    const blog = await Blog.findById(request.params.id);
+    if (!blog) return response.status(400).send({ error: "invalid blog id" });
+    if (blog.user.toString() !== decodedToken.id.toString())
+      return response.status(401).send({ error: "wrong user" });
+
+    await Blog.findByIdAndRemove(request.params.id);
+    response.status(204).end();
+  } catch (error) {
+    return next(error);
+  }
 });
 
 blogsRouter.put("/:id", async (request, response) => {

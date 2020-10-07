@@ -1,16 +1,22 @@
-module.exports = [
+const users = [
+  {
+    username: "username_1",
+    password: "password_1",
+    name: "name_1",
+  },
+  {
+    username: "username_2",
+    password: "password_2",
+    name: "name_2",
+  },
+];
+
+const blogs = [
   {
     title: "React patterns",
     author: "Michael Chan",
     url: "https://reactpatterns.com/",
     likes: 7,
-  },
-  {
-    title: "Go To Statement Considered Harmful",
-    author: "Edsger W. Dijkstra",
-    url:
-      "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-    likes: 5,
   },
   {
     title: "Canonical string reduction",
@@ -19,17 +25,9 @@ module.exports = [
     likes: 12,
   },
   {
-    title: "First class tests",
-    author: "Robert C. Martin",
-    url:
-      "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-    likes: 10,
-  },
-  {
     title: "TDD harms architecture",
     author: "Robert C. Martin",
-    url:
-      "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+    url: "http://blog.cleancoder.com/2017/03/03/TDD-Harms-Architecture.html",
     likes: 0,
   },
   {
@@ -39,3 +37,5 @@ module.exports = [
     likes: 2,
   },
 ];
+
+module.exports = { users, blogs };

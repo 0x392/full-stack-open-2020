@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer <put-token-here>
 
 {
-  "title": "BlogTitle",
-  "author": "BlogAuthor",
-  "url": "BlogURL",
-  "likes": 20
+  "title": "new_title",
+  "author": "new_user",
+  "url": "new_url",
+  "likes": 8
 }

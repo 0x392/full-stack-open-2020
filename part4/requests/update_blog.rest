@@ -1,0 +1,10 @@
+PUT http://localhost:3001/api/blogs/5f7e8cb1aa99e45e019087b0
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1vY2tfdXNlcm5hbWVfMSIsImlkIjoiNWY3ZThjYjBhYTk5ZTQ1ZTAxOTA4N2FiIiwiaWF0IjoxNjAyMTI5MDgxfQ.0LwfuWRqp9j2lDWoiCddmLbqWnUlQbZUmwvKG1emLmo
+
+{
+  "title": "update_title",
+  "author": "update_author",
+  "url": "update_url",
+  "likes": 88
+}

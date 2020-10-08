@@ -50,20 +50,36 @@ blogsRouter.delete("/:id", async (request, response, next) => {
     if (!blog) return response.status(400).send({ error: "invalid blog id" });
     if (blog.user.toString() !== decodedToken.id.toString())
       return response.status(401).send({ error: "wrong user" });
-
-    await Blog.findByIdAndRemove(request.params.id);
-    response.status(204).end();
   } catch (error) {
     return next(error);
   }
+
+  await Blog.findByIdAndRemove(request.params.id);
+  response.status(204).end();
 });
 
-blogsRouter.put("/:id", async (request, response) => {
+blogsRouter.put("/:id", async (request, response, next) => {
+  try {
+    const token = request.token;
+    const decodedToken = await jwt.verify(token, process.env.SECRET);
+    if (!token || !decodedToken) {
+      return response.status(401).send({ error: "token missing or invalid" });
+    }
+
+    const blog = await Blog.findById(request.params.id);
+    if (!blog) return response.status(400).send({ error: "invalid blog id" });
+    if (blog.user.toString() !== decodedToken.id.toString())
+      return response.status(401).send({ error: "wrong user" });
+  } catch (error) {
+    return next(error);
+  }
+
   const body = request.body;
   const blog = {
     title: body.title,
     author: body.author,
     url: body.url,
+    likes: body.likes
   };
 
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {

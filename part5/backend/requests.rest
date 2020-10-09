@@ -1,0 +1,35 @@
+### 0-1. GET ALL USERS
+GET http://localhost:3001/api/users
+### 0-2. GET ALL BLOGS
+GET http://localhost:3001/api/blogs
+### 1. CREATE NEW USER
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "username_1",
+  "password": "password_1",
+  "name": "name_1"
+}
+### 2. LOGIN
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+  "username": "username_1",
+  "password": "password_1"
+}
+### 3. CREATE NEW BLOG
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer <token>
+
+{
+  "title": "title_1",
+  "user": "user_1",
+  "url": "url_1",
+  "likes": 1
+}
+### 4. DELETE BLOG
+DELETE http://localhost:3001/api/blogs/<id>
+Authorization: bearer <token>

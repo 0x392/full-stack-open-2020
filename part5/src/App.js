@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
-import loginService from "./services/login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState("username_1");
-  const [password, setPassword] = useState("password_1");
   const [user, setUser] = useState(null);
   const [newBlogTitle, setNewBlogTitle] = useState(`title_${Date.now()}`);
   const [newBlogAuthor, setNewBlogAuthor] = useState(`author_${Date.now()}`);
@@ -27,30 +25,6 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
-
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
-    try {
-      const user = await loginService.login({ username, password });
-      window.localStorage.setItem("blog-app-user", JSON.stringify(user));
-      blogService.setToken(user.token);
-      setUser(user);
-      setUsername("");
-      setPassword("");
-      setMessage({
-        type: "successful",
-        content: "Login succeeds",
-      });
-      setTimeout(() => setMessage(null), 3000);
-    } catch (error) {
-      setMessage({
-        type: "unsuccessful",
-        content: error.response.data.error,
-      });
-      setTimeout(() => setMessage(null), 3000);
-    }
-  };
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -92,32 +66,16 @@ const App = () => {
     }
   };
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <h2>log in to application</h2>
-      <Notification message={message} />
-      <div>
-        username{" "}
-        <input
-          type="text"
-          value={username}
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password{" "}
-        <input
-          type="text"
-          value={password}
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  );
-
   if (user === null) {
-    return <div>{loginForm()}</div>;
+    return (
+      <div>
+        <LoginForm
+          message={message}
+          setMessage={setMessage}
+          setUser={setUser}
+        />
+      </div>
+    );
   }
 
   return (

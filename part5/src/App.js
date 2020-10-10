@@ -9,6 +9,9 @@ import blogService from "./services/blogs";
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
+  const [newBlogTitle, setNewBlogTitle] = useState(`title_${Date.now()}`);
+  const [newBlogAuthor, setNewBlogAuthor] = useState(`author_${Date.now()}`);
+  const [newBlogUrl, setNewBlogUrl] = useState(`url_${Date.now()}`);
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
@@ -23,6 +26,34 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
+
+  const addBlog = async (event) => {
+    event.preventDefault();
+
+    try {
+      const savedBlog = await blogService.create({
+        title: newBlogTitle,
+        author: newBlogAuthor,
+        url: newBlogUrl,
+      });
+
+      setBlogs(blogs.concat(savedBlog));
+      setNewBlogTitle("");
+      setNewBlogAuthor("");
+      setNewBlogUrl("");
+      setMessage({
+        type: "successful",
+        content: `a new blog "${newBlogTitle}" by "${newBlogAuthor}" added`,
+      });
+      setTimeout(() => setMessage(null), 3000);
+    } catch (error) {
+      setMessage({
+        type: "unsuccessful",
+        content: error.response.data.error,
+      });
+      setTimeout(() => setMessage(null), 3000);
+    }
+  };
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -57,9 +88,13 @@ const App = () => {
       </div>
       <Togglable buttonLabel="new note">
         <NewNoteForm
-          blogs={blogs}
-          setBlogs={setBlogs}
-          setMessage={setMessage}
+          newBlogTitle={newBlogTitle}
+          setNewBlogTitle={setNewBlogTitle}
+          newBlogAuthor={newBlogAuthor}
+          setNewBlogAuthor={setNewBlogAuthor}
+          newBlogUrl={newBlogUrl}
+          setNewBlogUrl={setNewBlogUrl}
+          addBlog={addBlog}
         />
       </Togglable>
       {blogs.map((blog) => (

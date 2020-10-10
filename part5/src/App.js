@@ -1,22 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
-
-const Notification = ({ message }) => {
-  if (message === null) {
-    return null;
-  }
-  const color = message.type === "successful" ? "green" : "red";
-  const style = {
-    border: `1px solid ${color}`,
-    borderRadius: ".5rem",
-    color: color,
-    marginBottom: ".5rem",
-    padding: ".5rem",
-  };
-  return <div style={style}>{message.content}</div>;
-};
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);

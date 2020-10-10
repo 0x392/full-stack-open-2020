@@ -1,6 +1,6 @@
 import React from "react";
 
-const NewNoteForm = ({
+const NewBlogForm = ({
   newBlogTitle,
   setNewBlogTitle,
   newBlogAuthor,
@@ -45,4 +45,4 @@ const NewNoteForm = ({
   );
 };
 
-export default NewNoteForm;
+export default NewBlogForm;

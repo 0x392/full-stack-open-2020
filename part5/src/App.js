@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
-import NewNoteForm from "./components/NewNoteForm";
+import NewBlogForm from "./components/NewBlogForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
@@ -86,8 +86,8 @@ const App = () => {
       <div>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </div>
-      <Togglable buttonLabel="new note">
-        <NewNoteForm
+      <Togglable buttonLabel="new blog">
+        <NewBlogForm
           newBlogTitle={newBlogTitle}
           setNewBlogTitle={setNewBlogTitle}
           newBlogAuthor={newBlogAuthor}

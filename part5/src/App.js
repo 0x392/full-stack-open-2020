@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import NewBlogForm from "./components/NewBlogForm";
@@ -13,6 +13,7 @@ const App = () => {
   const [newBlogAuthor, setNewBlogAuthor] = useState(`author_${Date.now()}`);
   const [newBlogUrl, setNewBlogUrl] = useState(`url_${Date.now()}`);
   const [message, setMessage] = useState(null);
+  const newBlogRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -29,6 +30,7 @@ const App = () => {
 
   const addBlog = async (event) => {
     event.preventDefault();
+    newBlogRef.current.toggleVisibility();
 
     try {
       const savedBlog = await blogService.create({
@@ -86,7 +88,7 @@ const App = () => {
       <div>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </div>
-      <Togglable buttonLabel="new blog">
+      <Togglable buttonLabel="new blog" ref={newBlogRef}>
         <NewBlogForm
           newBlogTitle={newBlogTitle}
           setNewBlogTitle={setNewBlogTitle}

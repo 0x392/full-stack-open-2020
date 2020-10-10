@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 
-const NewBlogForm = ({
-  newBlogTitle,
-  setNewBlogTitle,
-  newBlogAuthor,
-  setNewBlogAuthor,
-  newBlogUrl,
-  setNewBlogUrl,
-  addBlog,
-}) => {
+const NewBlogForm = ({ createBlog, message, setMessage }) => {
+  const [newBlogTitle, setNewBlogTitle] = useState(`title_${Date.now()}`);
+  const [newBlogAuthor, setNewBlogAuthor] = useState(`author_${Date.now()}`);
+  const [newBlogUrl, setNewBlogUrl] = useState(`url_${Date.now()}`);
+
+  const addBlog = async (event) => {
+    event.preventDefault();
+
+    try {
+      createBlog({
+        title: newBlogTitle,
+        author: newBlogAuthor,
+        url: newBlogUrl,
+      });
+
+      setNewBlogTitle("");
+      setNewBlogAuthor("");
+      setNewBlogUrl("");
+
+      setMessage({
+        type: "successful",
+        content: `a new blog "${newBlogTitle}" by "${newBlogAuthor}" added`,
+      });
+      setTimeout(() => setMessage(null), 3000);
+    } catch (error) {
+      setMessage({
+        type: "unsuccessful",
+        content: error.response.data.error,
+      });
+      setTimeout(() => setMessage(null), 3000);
+    }
+  };
+
   return (
     <>
       <h2>create new</h2>

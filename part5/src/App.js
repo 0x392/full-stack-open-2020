@@ -12,8 +12,11 @@ const App = () => {
   const [message, setMessage] = useState(null);
   const newBlogRef = useRef();
 
-  useEffect(() => {
+  const getAllBlogs = () =>
     blogService.getAll().then((blogs) => setBlogs(blogs));
+
+  useEffect(() => {
+    getAllBlogs();
   }, []);
 
   useEffect(() => {
@@ -43,6 +46,15 @@ const App = () => {
     blogService.setToken(null);
   };
 
+  const sortedBlogList = () => {
+    const compareLikes = (a, b) => b.likes - a.likes;
+
+    const sortedBlog = [...blogs].sort(compareLikes);
+    return sortedBlog.map((blog) => (
+      <Blog key={blog.id} blog={blog} updateBlogs={getAllBlogs} />
+    ));
+  };
+
   if (user === null) {
     return (
       <div>
@@ -69,9 +81,7 @@ const App = () => {
           setMessage={setMessage}
         />
       </Togglable>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
+      {sortedBlogList()}
     </div>
   );
 };

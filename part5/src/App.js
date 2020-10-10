@@ -54,6 +54,11 @@ const App = () => {
   const handleLogout = (event) => {
     event.preventDefault();
     window.localStorage.removeItem("blog-app-user");
+    setMessage({
+      type: "successful",
+      content: `${user.name} has logged out`,
+    });
+    setTimeout(() => setMessage(null), 3000);
     setUser(null);
     blogService.setToken(null);
   };

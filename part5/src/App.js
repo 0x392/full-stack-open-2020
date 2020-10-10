@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
+import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -126,36 +127,38 @@ const App = () => {
       <div>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </div>
-      <h2>create new</h2>
-      <form>
-        <div>
-          title:{" "}
-          <input
-            type="text"
-            value={newBlogTitle}
-            onChange={({ target }) => setNewBlogTitle(target.value)}
-          />
-        </div>
-        <div>
-          author:{" "}
-          <input
-            type="text"
-            value={newBlogAuthor}
-            onChange={({ target }) => setNewBlogAuthor(target.value)}
-          />
-        </div>
-        <div>
-          url:{" "}
-          <input
-            type="text"
-            value={newBlogUrl}
-            onChange={({ target }) => setNewBlogUrl(target.value)}
-          />
-        </div>
-        <div>
-          <button onClick={createNewBlog}>create</button>
-        </div>
-      </form>
+      <Togglable buttonLabel="new note">
+        <h2>create new</h2>
+        <form>
+          <div>
+            title:{" "}
+            <input
+              type="text"
+              value={newBlogTitle}
+              onChange={({ target }) => setNewBlogTitle(target.value)}
+            />
+          </div>
+          <div>
+            author:{" "}
+            <input
+              type="text"
+              value={newBlogAuthor}
+              onChange={({ target }) => setNewBlogAuthor(target.value)}
+            />
+          </div>
+          <div>
+            url:{" "}
+            <input
+              type="text"
+              value={newBlogUrl}
+              onChange={({ target }) => setNewBlogUrl(target.value)}
+            />
+          </div>
+          <div>
+            <button onClick={createNewBlog}>create</button>
+          </div>
+        </form>
+      </Togglable>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

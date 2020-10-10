@@ -10,6 +10,7 @@ router.get("/", async (request, response) => {
 });
 
 router.delete("/:id", async (request, response) => {
+  /*
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
   if (!request.token || !decodedToken.id) {
@@ -17,6 +18,7 @@ router.delete("/:id", async (request, response) => {
   }
 
   const user = await User.findById(decodedToken.id);
+
   const blog = await Blog.findById(request.params.id);
   if (blog.user.toString() !== user.id.toString()) {
     return response
@@ -29,6 +31,8 @@ router.delete("/:id", async (request, response) => {
     (b) => b.id.toString() !== request.params.id.toString()
   );
   await user.save();
+  */
+  await Blog.findByIdAndDelete(request.params.id);
   response.status(204).end();
 });
 

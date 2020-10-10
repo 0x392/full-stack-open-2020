@@ -30,4 +30,8 @@ const like = async (blog) => {
   return await axios.put(`${baseUrl}/${blog.id}`, updatedBlog);
 };
 
-export default { setToken, getAll, create, like };
+const remove = async (blog) => {
+  axios.delete(`${baseUrl}/${blog.id}`);
+};
+
+export default { setToken, getAll, create, like, remove };

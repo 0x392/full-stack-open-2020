@@ -75,11 +75,7 @@ const App = () => {
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </div>
       <Togglable buttonLabel="new blog" ref={newBlogRef}>
-        <NewBlogForm
-          createBlog={addBlog}
-          message={message}
-          setMessage={setMessage}
-        />
+        <NewBlogForm createBlog={addBlog} setMessage={setMessage} />
       </Togglable>
       {sortedBlogList()}
     </div>

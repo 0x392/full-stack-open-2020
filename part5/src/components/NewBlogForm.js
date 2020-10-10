@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-const NewBlogForm = ({ createBlog, message, setMessage }) => {
+const NewBlogForm = ({ createBlog, setMessage }) => {
   const [newBlogTitle, setNewBlogTitle] = useState(`title_${Date.now()}`);
   const [newBlogAuthor, setNewBlogAuthor] = useState(`author_${Date.now()}`);
   const [newBlogUrl, setNewBlogUrl] = useState(`url_${Date.now()}`);
@@ -67,6 +68,11 @@ const NewBlogForm = ({ createBlog, message, setMessage }) => {
       </form>
     </>
   );
+};
+
+NewBlogForm.propTypes = {
+  createBlog: PropTypes.func.isRequired,
+  setMessage: PropTypes.func.isRequired,
 };
 
 export default NewBlogForm;

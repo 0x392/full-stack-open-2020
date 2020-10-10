@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Notification from "./Notification";
 import blogService from "../services/blogs";
 import loginService from "../services/login";
+import PropTypes from "prop-types";
 
 const LoginForm = ({ message, setMessage, setUser }) => {
   const [username, setUsername] = useState("username_1");
@@ -54,6 +55,12 @@ const LoginForm = ({ message, setMessage, setUser }) => {
       <button type="submit">login</button>
     </form>
   );
+};
+
+LoginForm.propTypes = {
+  message: PropTypes.object,
+  setMessage: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

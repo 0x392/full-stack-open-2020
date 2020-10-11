@@ -1,43 +1,40 @@
 import React, { useState } from "react";
-import Notification from "./Notification";
 import blogService from "../services/blogs";
 import loginService from "../services/login";
 import PropTypes from "prop-types";
 
-const LoginForm = ({ message, setMessage, setUser }) => {
+const LoginForm = ({ setNotification, setUser }) => {
   const [username, setUsername] = useState("username_1");
   const [password, setPassword] = useState("password_1");
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
     try {
       const user = await loginService.login({ username, password });
       blogService.setToken(user.token);
       window.localStorage.setItem("blog-app-user", JSON.stringify(user));
+      setNotification({
+        type: "successful",
+        content: `Welcome, ${username}!`,
+      });
+      setTimeout(() => setNotification(null), 3000);
       setUsername("");
       setPassword("");
       setUser(user);
-      setMessage({
-        type: "successful",
-        content: "Login succeeds",
-      });
-      setTimeout(() => setMessage(null), 3000);
     } catch (error) {
-      setMessage({
+      setNotification({
         type: "unsuccessful",
         content: error.response.data.error,
       });
-      setTimeout(() => setMessage(null), 3000);
+      setTimeout(() => setNotification(null), 3000);
     }
   };
 
   return (
     <form onSubmit={handleLogin}>
-      <h2>log in to application</h2>
-      <Notification message={message} />
+      <h2>Sign In to the Application</h2>
       <div>
-        username{" "}
+        Username{" "}
         <input
           type="text"
           value={username}
@@ -45,21 +42,20 @@ const LoginForm = ({ message, setMessage, setUser }) => {
         />
       </div>
       <div>
-        password{" "}
+        Password{" "}
         <input
           type="text"
           value={password}
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <button type="submit">Sign in</button>
     </form>
   );
 };
 
 LoginForm.propTypes = {
-  message: PropTypes.object,
-  setMessage: PropTypes.func.isRequired,
+  setNotification: PropTypes.func.isRequired,
   setUser: PropTypes.func.isRequired,
 };
 

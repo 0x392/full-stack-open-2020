@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const NewBlogForm = ({ createBlog, setMessage }) => {
+const NewBlogForm = ({ createBlog, setNotification }) => {
   const [newBlogTitle, setNewBlogTitle] = useState(`title_${Date.now()}`);
   const [newBlogAuthor, setNewBlogAuthor] = useState(`author_${Date.now()}`);
   const [newBlogUrl, setNewBlogUrl] = useState(`url_${Date.now()}`);
@@ -15,31 +15,29 @@ const NewBlogForm = ({ createBlog, setMessage }) => {
         author: newBlogAuthor,
         url: newBlogUrl,
       });
-
+      setNotification({
+        type: "successful",
+        content: `A new blog "${newBlogTitle}" by "${newBlogAuthor}" added`,
+      });
+      setTimeout(() => setNotification(null), 3000);
       setNewBlogTitle("");
       setNewBlogAuthor("");
       setNewBlogUrl("");
-
-      setMessage({
-        type: "successful",
-        content: `a new blog "${newBlogTitle}" by "${newBlogAuthor}" added`,
-      });
-      setTimeout(() => setMessage(null), 3000);
     } catch (error) {
-      setMessage({
+      setNotification({
         type: "unsuccessful",
         content: error.response.data.error,
       });
-      setTimeout(() => setMessage(null), 3000);
+      setTimeout(() => setNotification(null), 3000);
     }
   };
 
   return (
     <>
-      <h2>create new</h2>
+      <h2>Create new blog</h2>
       <form onSubmit={addBlog}>
         <div>
-          title:{" "}
+          Title:{" "}
           <input
             type="text"
             value={newBlogTitle}
@@ -47,7 +45,7 @@ const NewBlogForm = ({ createBlog, setMessage }) => {
           />
         </div>
         <div>
-          author:{" "}
+          Author:{" "}
           <input
             type="text"
             value={newBlogAuthor}
@@ -55,7 +53,7 @@ const NewBlogForm = ({ createBlog, setMessage }) => {
           />
         </div>
         <div>
-          url:{" "}
+          Url:{" "}
           <input
             type="text"
             value={newBlogUrl}
@@ -63,7 +61,7 @@ const NewBlogForm = ({ createBlog, setMessage }) => {
           />
         </div>
         <div>
-          <button type="submit">create</button>
+          <button type="submit">Create</button>
         </div>
       </form>
     </>
@@ -72,7 +70,7 @@ const NewBlogForm = ({ createBlog, setMessage }) => {
 
 NewBlogForm.propTypes = {
   createBlog: PropTypes.func.isRequired,
-  setMessage: PropTypes.func.isRequired,
+  setNotification: PropTypes.func.isRequired,
 };
 
 export default NewBlogForm;

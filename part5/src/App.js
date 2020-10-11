@@ -9,7 +9,7 @@ import blogService from "./services/blogs";
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [message, setMessage] = useState(null);
+  const [notification, setNotification] = useState(null);
   const newBlogRef = useRef();
 
   const getAllBlogs = () =>
@@ -28,28 +28,27 @@ const App = () => {
     }
   }, []);
 
-  const addBlog = async (blogObject) => {
+  const createBlog = async (blogObject) => {
     newBlogRef.current.toggleVisibility();
     const savedBlog = await blogService.create(blogObject);
     setBlogs(blogs.concat(savedBlog));
   };
 
   const handleLogout = (event) => {
-    event.preventDefault();
     window.localStorage.removeItem("blog-app-user");
-    setMessage({
+    setNotification({
       type: "successful",
-      content: `${user.name} has logged out`,
+      content: `${user.name} has signed out`,
     });
-    setTimeout(() => setMessage(null), 3000);
+    setTimeout(() => setNotification(null), 3000);
     setUser(null);
     blogService.setToken(null);
   };
 
   const sortedBlogList = () => {
     const compareLikes = (a, b) => b.likes - a.likes;
-
     const sortedBlog = [...blogs].sort(compareLikes);
+
     return sortedBlog.map((blog) => (
       <Blog key={blog.id} blog={blog} updateBlogs={getAllBlogs} />
     ));
@@ -57,28 +56,31 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
-        <LoginForm
-          message={message}
-          setMessage={setMessage}
-          setUser={setUser}
-        />
-      </div>
+      <>
+        <Notification notification={notification} />
+        <LoginForm setNotification={setNotification} setUser={setUser} />
+      </>
     );
   }
 
   return (
-    <div>
-      <h2>blogs</h2>
-      <Notification message={message} />
+    <>
+      <Notification notification={notification} />
+      <h2>Blogs</h2>
       <div>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
+        <div>Signed in as {user.name}</div>
+        <div>
+          <button onClick={handleLogout}>Sign out</button>
+        </div>
       </div>
-      <Togglable buttonLabel="new blog" ref={newBlogRef}>
-        <NewBlogForm createBlog={addBlog} setMessage={setMessage} />
+      <Togglable buttonLabel="Create new blog" ref={newBlogRef}>
+        <NewBlogForm
+          createBlog={createBlog}
+          setNotification={setNotification}
+        />
       </Togglable>
       {sortedBlogList()}
-    </div>
+    </>
   );
 };
 

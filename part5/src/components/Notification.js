@@ -1,23 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Notification = ({ message }) => {
-  if (message === null) {
+const Notification = ({ notification }) => {
+  if (notification === null) {
     return null;
   }
 
-  const color = message.type === "successful" ? "green" : "red";
-  const style = {
-    border: `1px solid ${color}`,
-    borderRadius: ".5rem",
-    color: color,
-    marginBottom: ".5rem",
-    padding: ".5rem",
-  };
+  const className =
+    notification.type === "successful"
+      ? "notification notification-success"
+      : "notification notification-unsuccess";
 
-  return <div style={style}>{message.content}</div>;
+  return <div className={className}>{notification.content}</div>;
 };
 
-Notification.propTypes = { message: PropTypes.object };
+Notification.propTypes = { notification: PropTypes.object };
 
 export default Notification;

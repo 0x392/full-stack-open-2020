@@ -3,14 +3,7 @@ import blogService from "../services/blogs";
 import PropTypes from "prop-types";
 
 const Blog = ({ blog, updateBlogs }) => {
-  const [showDetail, setShowDetail] = useState(true);
-
-  const blogStyle = {
-    border: "1px solid #000",
-    borderRadius: ".5rem",
-    marginTop: ".5rem",
-    padding: ".6rem",
-  };
+  const [showDetail, setShowDetail] = useState(false);
 
   const showWhenShowDetail = { display: showDetail ? "" : "none" };
 
@@ -29,7 +22,7 @@ const Blog = ({ blog, updateBlogs }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div className="blog">
       <div className="blog-title">Title: {blog.title}</div>
       <div className="blog-author">Author: {blog.author}</div>
       <div>

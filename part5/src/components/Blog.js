@@ -30,20 +30,22 @@ const Blog = ({ blog, updateBlogs }) => {
 
   return (
     <div style={blogStyle}>
+      <div className="blog-title">Title: {blog.title}</div>
+      <div className="blog-author">Author: {blog.author}</div>
       <div>
-        {blog.title}{" "}
         <button onClick={toggleShowDetail}>
-          {!showDetail ? "Show Detail" : "Hide"}
+          {!showDetail ? "Show" : "Hide"} detail
         </button>
       </div>
+      <hr />
       <div style={showWhenShowDetail}>
-        <ul>
-          <li>URL: {blog.url}</li>
-          <li>Author: {blog.author}</li>
-          <li>
-            Likes: {blog.likes} <button onClick={handleLike}>Like</button>
-          </li>
-        </ul>
+        <h3>Detail</h3>
+        <div className="blog-url">URL: {blog.url}</div>
+        <div className="blog-likes">Likes: {blog.likes}</div>
+        <div>
+          <button onClick={handleLike}>Like</button>
+        </div>
+        <hr />
       </div>
       <div>
         <button onClick={handleRemove}>Remove</button>

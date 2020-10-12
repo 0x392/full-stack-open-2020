@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 const Blog = ({ blog, idx, like, remove }) => {
-  const [showDetail, setShowDetail] = useState(true);
+  const [showDetail, setShowDetail] = useState(false);
 
   const toggleShowDetail = () => setShowDetail(!showDetail);
 

@@ -5,13 +5,13 @@ const LoginForm = ({ login }) => {
   const [username, setUsername] = useState("username_1");
   const [password, setPassword] = useState("password_1");
 
-  const handleLogin = async (event) => {
+  const handleLogin = (event) => {
     event.preventDefault();
 
     // Should be placed before `login(..)`
     setUsername("");
     setPassword("");
-    await login({ username, password });
+    login({ username, password });
   };
 
   return (

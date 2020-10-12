@@ -6,16 +6,15 @@ const NewBlogForm = ({ addBlog }) => {
   const [newBlogAuthor, setNewBlogAuthor] = useState(`author_${Date.now()}`);
   const [newBlogUrl, setNewBlogUrl] = useState(`url_${Date.now()}`);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    await addBlog({
+    addBlog({
       title: newBlogTitle,
       author: newBlogAuthor,
       url: newBlogUrl,
     });
 
-    // Should be placed before `addBlog(..)`?
     setNewBlogTitle("");
     setNewBlogAuthor("");
     setNewBlogUrl("");
@@ -29,6 +28,7 @@ const NewBlogForm = ({ addBlog }) => {
           Title{" "}
           <input
             type="text"
+            id="new-blog-title"
             value={newBlogTitle}
             onChange={({ target }) => setNewBlogTitle(target.value)}
           />
@@ -37,6 +37,7 @@ const NewBlogForm = ({ addBlog }) => {
           Author{" "}
           <input
             type="text"
+            id="new-blog-author"
             value={newBlogAuthor}
             onChange={({ target }) => setNewBlogAuthor(target.value)}
           />
@@ -45,6 +46,7 @@ const NewBlogForm = ({ addBlog }) => {
           Url{" "}
           <input
             type="text"
+            id="new-blog-url"
             value={newBlogUrl}
             onChange={({ target }) => setNewBlogUrl(target.value)}
           />

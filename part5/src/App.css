@@ -125,7 +125,7 @@ button.sign-out {
 
 .notification {
   position: fixed;
-  left: 40px;
+  right: 40px;
   top: 20px;
 
   background: #fff;

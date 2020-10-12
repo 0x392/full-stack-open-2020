@@ -2,8 +2,8 @@ import React, { useState } from "react";
 // import PropTypes from "prop-types";
 
 const LoginForm = ({ login }) => {
-  const [username, setUsername] = useState("username_1");
-  const [password, setPassword] = useState("password_1");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = (event) => {
     event.preventDefault();

@@ -103,7 +103,7 @@ describe("Blog app", function () {
         });
       });
 
-      it.only("the blogs are ordered according to likes with the blog with the most likes being first", function () {
+      it("the blogs are ordered according to likes with the blog with the most likes being first", function () {
         cy.get("button.toggle-detail-button").click({ multiple: true });
         cy.get(".blog-likes").then((elements) => {
           const likes = [];

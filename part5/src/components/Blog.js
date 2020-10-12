@@ -1,55 +1,61 @@
 import React, { useState } from "react";
-import blogService from "../services/blogs";
 import PropTypes from "prop-types";
 
-const Blog = ({ blog, updateBlogs }) => {
-  const [showDetail, setShowDetail] = useState(false);
-
-  const showWhenShowDetail = { display: showDetail ? "" : "none" };
+const Blog = ({ blog, idx, like, remove }) => {
+  const [showDetail, setShowDetail] = useState(true);
 
   const toggleShowDetail = () => setShowDetail(!showDetail);
 
-  const handleLike = async () => {
-    await blogService.like(blog);
-    updateBlogs();
+  const handleLike = () => {
+    like(blog);
   };
 
   const handleRemove = async () => {
     if (window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`)) {
-      await blogService.remove(blog);
-      updateBlogs();
+      remove(blog);
     }
   };
 
-  return (
-    <div className="blog">
-      <div className="blog-title">Title: {blog.title}</div>
-      <div className="blog-author">Author: {blog.author}</div>
-      <div>
-        <button onClick={toggleShowDetail}>
-          {!showDetail ? "Show" : "Hide"} detail
-        </button>
-      </div>
+  const blogDetail = () => (
+    <>
       <hr />
-      <div style={showWhenShowDetail}>
-        <h3>Detail</h3>
-        <div className="blog-url">URL: {blog.url}</div>
-        <div className="blog-likes">Likes: {blog.likes}</div>
-        <div>
+      <div className="blog-padding">
+        <div className="blog-row blog-url">{blog.url}</div>
+        <div className="blog-row blog-likes">{blog.likes}</div>
+        <div className="blog-row">
           <button onClick={handleLike}>Like</button>
         </div>
-        <hr />
+        <div className="blog-row">
+          <button onClick={handleRemove} className="remove">
+            Remove
+          </button>
+        </div>
       </div>
-      <div>
-        <button onClick={handleRemove}>Remove</button>
+    </>
+  );
+
+  return (
+    <div className="blog">
+      <div className="blog-idx">{idx + 1}</div>
+      <div className="blog-padding">
+        <div className="blog-row blog-title">{blog.title}</div>
+        <div className="blog-row blog-author">{blog.author}</div>
+        <div className="blog-row">
+          <button onClick={toggleShowDetail}>
+            {!showDetail ? "Show" : "Hide"} detail
+          </button>
+        </div>
       </div>
+      {showDetail && blogDetail()}
     </div>
   );
 };
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  updateBlogs: PropTypes.func.isRequired,
+  idx: PropTypes.number.isRequired,
+  like: PropTypes.func.isRequired,
+  remove: PropTypes.func.isRequired,
 };
 
 export default Blog;

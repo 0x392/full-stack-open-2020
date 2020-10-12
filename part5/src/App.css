@@ -1,21 +1,132 @@
-body {
-  background: rgb(250, 250, 255);
-  margin: 0;
-  padding: 0;
+* {
+  box-sizing: border-box;
 }
 
-h2 {
-  margin: 0 0 1rem;
+body {
+  background: rgb(200, 235, 255);
+  margin: 0;
 }
 
 #root {
-  padding: 75px 40px 40px;
+  background: rgb(250, 250, 255);
+  border-radius: 10px;
+  margin: 50px auto 60px;
+  padding: 30px;
+  position: relative;
+  width: 720px;
+}
+
+#root h2 {
+  margin: 0 0 10px;
+}
+
+.signed-in-name {
+  margin: 0 0 15px;
+}
+
+button.sign-out {
+  position: absolute;
+  right: 30px;
+  top: 10px;
+
+  background: rgb(225, 240, 255);
+  border: 0;
+  border-radius: 15px;
+  color: rgb(0, 130, 255);
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+  outline: 0;
+  padding: 10px 20px;
+  text-transform: uppercase;
+}
+
+.blog {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.05);
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.blog-idx {
+  position: absolute;
+  color: rgb(165, 170, 205);
+  top: 15px;
+  right: 20px;
+}
+
+.blog-padding {
+  padding: 20px 25px;
+}
+
+.blog-row {
+  color: red;
+  font-size: 1.15rem;
+}
+
+.blog-row button,
+button.sign-out {
+  background: rgb(225, 240, 255);
+  border: 0;
+  border-radius: 15px;
+  color: rgb(0, 130, 255);
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+  outline: 0;
+  padding: 10px 20px;
+  text-transform: uppercase;
+}
+
+.blog-row button.remove {
+  background: rgb(255, 235, 230);
+  color: rgb(255, 10, 10);
+}
+
+.blog-title,
+.blog-author,
+.blog-url,
+.blog-likes {
+  color: rgb(85, 90, 150);
+  left: 80px;
+  position: relative;
+}
+
+.blog-title::before,
+.blog-author::before,
+.blog-url::before,
+.blog-likes::before {
+  color: rgb(165, 170, 205);
+  position: absolute;
+  left: -80px;
+}
+
+.blog-title::before {
+  content: "Title";
+}
+
+.blog-author::before {
+  content: "Author";
+}
+
+.blog-url::before {
+  content: "URL";
+}
+
+.blog-likes::before {
+  content: "Likes";
+}
+
+.blog hr {
+  border: 2px dashed rgb(250, 250, 255);
+  margin: 0;
 }
 
 .notification {
   position: fixed;
-  top: 20px;
   left: 40px;
+  top: 20px;
 
   background: #fff;
   border-radius: 0.5rem;
@@ -30,13 +141,4 @@ h2 {
 
 .notification-unsuccess {
   color: red;
-}
-
-.blog {
-  background: #fff;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.05);
-  color: rgb(85, 90, 150);
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
 }

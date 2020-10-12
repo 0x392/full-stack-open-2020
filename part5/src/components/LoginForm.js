@@ -1,33 +1,17 @@
 import React, { useState } from "react";
-import blogService from "../services/blogs";
-import loginService from "../services/login";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
-const LoginForm = ({ setNotification, setUser }) => {
+const LoginForm = ({ login }) => {
   const [username, setUsername] = useState("username_1");
   const [password, setPassword] = useState("password_1");
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    try {
-      const user = await loginService.login({ username, password });
-      blogService.setToken(user.token);
-      window.localStorage.setItem("blog-app-user", JSON.stringify(user));
-      setNotification({
-        type: "successful",
-        content: `Welcome, ${username}!`,
-      });
-      setTimeout(() => setNotification(null), 3000);
-      setUsername("");
-      setPassword("");
-      setUser(user);
-    } catch (error) {
-      setNotification({
-        type: "unsuccessful",
-        content: error.response.data.error,
-      });
-      setTimeout(() => setNotification(null), 3000);
-    }
+
+    // Should be placed before `login(..)`
+    setUsername("");
+    setPassword("");
+    await login({ username, password });
   };
 
   return (
@@ -55,8 +39,8 @@ const LoginForm = ({ setNotification, setUser }) => {
 };
 
 LoginForm.propTypes = {
-  setNotification: PropTypes.func.isRequired,
-  setUser: PropTypes.func.isRequired,
+  // setNotification: PropTypes.func.isRequired,
+  // setUser: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

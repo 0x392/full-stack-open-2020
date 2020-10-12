@@ -20,14 +20,15 @@ const create = async (newObject) => {
 };
 
 const like = async (blog) => {
-  const updatedBlog = {
-    likes: blog.likes + 1,
+  const likedBlog = {
     title: blog.title,
+    author: blog.author,
     url: blog.url,
+    likes: blog.likes + 1,
     user: blog.user.id,
   };
 
-  return await axios.put(`${baseUrl}/${blog.id}`, updatedBlog);
+  return await axios.put(`${baseUrl}/${blog.id}`, likedBlog);
 };
 
 const remove = async (blog) => {

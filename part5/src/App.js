@@ -112,6 +112,7 @@ const App = () => {
   if (user === null) {
     return (
       <>
+        <Notification notification={notification} />
         <LoginForm login={handleLogin} />
       </>
     );

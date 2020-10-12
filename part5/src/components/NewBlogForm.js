@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 const NewBlogForm = ({ addBlog }) => {
-  const [newBlogTitle, setNewBlogTitle] = useState(`title_${Date.now()}`);
-  const [newBlogAuthor, setNewBlogAuthor] = useState(`author_${Date.now()}`);
-  const [newBlogUrl, setNewBlogUrl] = useState(`url_${Date.now()}`);
+  const [newBlogTitle, setNewBlogTitle] = useState("");
+  const [newBlogAuthor, setNewBlogAuthor] = useState("");
+  const [newBlogUrl, setNewBlogUrl] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -52,7 +52,9 @@ const NewBlogForm = ({ addBlog }) => {
           />
         </div>
         <div>
-          <button type="submit">Create</button>
+          <button type="submit" id="create-new-blog-button">
+            Create
+          </button>
         </div>
       </form>
     </>

@@ -41,7 +41,7 @@ const Blog = ({ blog, idx, like, remove }) => {
         <div className="blog-row blog-title">{blog.title}</div>
         <div className="blog-row blog-author">{blog.author}</div>
         <div className="blog-row">
-          <button onClick={toggleShowDetail}>
+          <button onClick={toggleShowDetail} className="toggle-detail-button">
             {!showDetail ? "Show" : "Hide"} detail
           </button>
         </div>

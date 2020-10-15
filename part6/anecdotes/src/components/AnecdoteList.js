@@ -1,6 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { voteOf } from "../reducers/anecdoteReducer";
+import {
+  showNotification,
+  hideNotification,
+} from "../reducers/notificationReducer";
 
 const Anecdote = ({ anecdote, handleClick }) => (
   <div key={anecdote.id}>
@@ -14,27 +18,29 @@ const Anecdote = ({ anecdote, handleClick }) => (
 
 const AnecdoteList = () => {
   const dispatch = useDispatch();
-  const anecdotes = useSelector((state) => state);
+  const anecdotes = useSelector((state) => state.anecdotes);
+  const filter = useSelector((state) => state.filter);
 
-  const vote = (id) => {
-    console.log("vote", id);
+  const vote = ({ id, content }) => {
     dispatch(voteOf(id));
+    dispatch(showNotification(`You voted "${content}"`));
+    setTimeout(() => dispatch(hideNotification()), 5000);
   };
 
-  const sortedAnecdotes = () => {
-    const compareFunc = (a, b) => b.votes - a.votes;
-    const sortedAnecdotes = [...anecdotes].sort(compareFunc);
+  const filteredAnecdotes = anecdotes.filter(
+    (anecdote) => anecdote.content.indexOf(filter) !== -1
+  );
 
-    return sortedAnecdotes.map((anecdote) => (
-      <Anecdote
-        key={anecdote.id}
-        anecdote={anecdote}
-        handleClick={() => vote(anecdote.id)}
-      />
-    ));
-  };
+  const compareFunc = (a, b) => b.votes - a.votes;
+  const sortedAnecdotes = [...filteredAnecdotes].sort(compareFunc);
 
-  return sortedAnecdotes();
+  return sortedAnecdotes.map((anecdote) => (
+    <Anecdote
+      key={anecdote.id}
+      anecdote={anecdote}
+      handleClick={() => vote(anecdote)}
+    />
+  ));
 };
 
 export default AnecdoteList;

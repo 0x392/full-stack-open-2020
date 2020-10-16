@@ -6,7 +6,8 @@ const Filter = () => {
   const dispatch = useDispatch();
 
   const handleChange = (event) => {
-    dispatch(setFilter(event.target.value));
+    const filter = event.target.value;
+    dispatch(setFilter(filter));
   };
 
   const style = {

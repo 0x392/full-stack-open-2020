@@ -1,17 +1,17 @@
 export const showNotification = (notification) => ({
   type: "SET_NOTIFICATION",
-  notification,
+  data: { notification },
 });
 
 export const hideNotification = () => ({
   type: "SET_NOTIFICATION",
-  notification: null,
+  data: { notification: null },
 });
 
 const reducer = (state = null, action) => {
   switch (action.type) {
     case "SET_NOTIFICATION":
-      return action.notification;
+      return action.data.notification;
     default:
       return state;
   }

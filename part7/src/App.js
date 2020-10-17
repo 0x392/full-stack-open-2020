@@ -1,19 +1,35 @@
 import React, { useState } from "react";
+import {
+  Link,
+  Route,
+  Switch,
+  useHistory,
+  useRouteMatch,
+} from "react-router-dom";
 
 const Menu = () => {
   const margin = { marginRight: 10 };
 
   return (
     <div>
-      <a href="#" style={margin}>
+      <Link to="/" style={margin}>
         Anecdotes
-      </a>
-      <a href="#" style={margin}>
+      </Link>
+      <Link to="/create" style={margin}>
         Create new
-      </a>
-      <a href="#" style={margin}>
+      </Link>
+      <Link to="/about" style={margin}>
         About
-      </a>
+      </Link>
+    </div>
+  );
+};
+
+const Anecdote = ({ anecdote }) => {
+  return (
+    <div>
+      <h2>{anecdote.content}</h2>
+      <div>has {anecdote.votes} votes</div>
     </div>
   );
 };
@@ -23,7 +39,9 @@ const AnecdoteList = ({ anecdotes }) => (
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>{anecdote.content}</li>
+        <li key={anecdote.id}>
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
       ))}
     </ul>
   </div>
@@ -73,6 +91,7 @@ const CreateNew = (props) => {
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -82,6 +101,11 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     });
+    props.setNotification(`A new anecdote "${content}" created!`);
+    setTimeout(() => {
+      props.setNotification(null);
+    }, 10000);
+    history.push("/");
   };
 
   return (
@@ -135,8 +159,12 @@ const App = () => {
       id: "2",
     },
   ]);
+  const [notification, setNotification] = useState("");
 
-  // const [notification, setNotification] = useState("");
+  const match = useRouteMatch("/anecdotes/:id");
+  const anecdote = match
+    ? anecdotes.find((a) => a.id === match.params.id)
+    : null;
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
@@ -159,14 +187,28 @@ const App = () => {
   */
 
   return (
-    <div>
+    <>
       <h1>Software Anecdotes</h1>
       <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
+      {notification && <div>{notification}</div>}
+
+      <Switch>
+        <Route path="/create">
+          <CreateNew addNew={addNew} setNotification={setNotification} />
+        </Route>
+        <Route path="/about">
+          <About />
+        </Route>
+        <Route path="/anecdotes/:id">
+          <Anecdote anecdote={anecdote} />
+        </Route>
+        <Route path="/">
+          <AnecdoteList anecdotes={anecdotes} />
+        </Route>
+      </Switch>
+
       <Footer />
-    </div>
+    </>
   );
 };
 

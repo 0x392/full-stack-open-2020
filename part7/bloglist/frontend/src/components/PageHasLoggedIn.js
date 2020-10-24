@@ -1,9 +1,12 @@
 import React, { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Route, Switch } from "react-router-dom";
 import BlogList from "./BlogList";
 import NewBlogForm from "./NewBlogForm";
 import Togglable from "./Togglable";
 import Notification from "./Notification";
+import UserInfo from "./UserInfo";
+import UserList from "./UserList";
 import {
   setNotification,
   clearNotification,
@@ -32,10 +35,20 @@ const PageHasLoggedIn = () => {
       <button onClick={handleLogout} className="sign-out">
         Sign out
       </button>
-      <Togglable buttonLabel="Create new blog" ref={toggleRef}>
-        <NewBlogForm toggleRef={toggleRef} />
-      </Togglable>
-      <BlogList />
+      <Switch>
+        <Route path="/users/:id">
+          <UserInfo />
+        </Route>
+        <Route path="/users">
+          <UserList />
+        </Route>
+        <Route path="/">
+          <Togglable buttonLabel="Create new blog" ref={toggleRef}>
+            <NewBlogForm toggleRef={toggleRef} />
+          </Togglable>
+          <BlogList />
+        </Route>
+      </Switch>
     </>
   );
 };

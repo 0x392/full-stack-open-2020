@@ -1,49 +1,52 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import { useDispatch } from "react-redux";
+import {
+  setNotification,
+  clearNotification,
+} from "../reducers/notificationReducer";
+import blogService from "../services/blogs";
+import userService from "../services/users";
 
-const LoginForm = ({ login }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const LoginForm = () => {
+  const dispatch = useDispatch();
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
-    // Should be placed before `login(..)`
-    setUsername("");
-    setPassword("");
-    login({ username, password });
+    const username = event.target.username.value;
+    const password = event.target.password.value;
+    event.target.username.value = "";
+    event.target.password.value = "";
+
+    try {
+      const user = await userService.login({ username, password });
+
+      blogService.setToken(user.token);
+      window.localStorage.setItem("blog-app-user", JSON.stringify(user));
+      dispatch({ type: "LOGIN", data: { user } });
+
+      dispatch(setNotification("successful", `Signed in as ${username}`));
+      setTimeout(() => dispatch(clearNotification()), 3000);
+    } catch (error) {
+      dispatch(setNotification("unsuccessful", error.response.data.error));
+      setTimeout(() => dispatch(clearNotification()), 3000);
+    }
   };
 
   return (
     <form onSubmit={handleLogin} id="login-form">
       <h2>Sign In to the Application</h2>
       <div>
-        Username{" "}
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={({ target }) => setUsername(target.value)}
-        />
+        Username <input type="text" name="username" />
       </div>
       <div>
-        Password{" "}
-        <input
-          type="text"
-          id="password"
-          value={password}
-          onChange={({ target }) => setPassword(target.value)}
-        />
+        Password <input type="text" name="password" />
       </div>
       <button type="submit" id="login-button">
         Sign in
       </button>
     </form>
   );
-};
-
-LoginForm.propTypes = {
-  login: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

@@ -1,23 +1,42 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { createBlog } from "../reducers/blogReducer";
+import {
+  setNotification,
+  clearNotification,
+} from "../reducers/notificationReducer";
+import blogService from "../services/blogs";
 
-const NewBlogForm = ({ addBlog }) => {
-  const [newBlogTitle, setNewBlogTitle] = useState("");
-  const [newBlogAuthor, setNewBlogAuthor] = useState("");
-  const [newBlogUrl, setNewBlogUrl] = useState("");
+const NewBlogForm = (props) => {
+  const dispatch = useDispatch();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    addBlog({
-      title: newBlogTitle,
-      author: newBlogAuthor,
-      url: newBlogUrl,
-    });
+    const title = event.target.title.value;
+    const author = event.target.author.value;
+    const url = event.target.url.value;
+    event.target.title.value = "";
+    event.target.author.value = "";
+    event.target.url.value = "";
 
-    setNewBlogTitle("");
-    setNewBlogAuthor("");
-    setNewBlogUrl("");
+    try {
+      const savedBlog = await blogService.create({ title, author, url });
+      dispatch(createBlog(savedBlog));
+
+      dispatch(
+        setNotification(
+          "successful",
+          `A new blog "${title}" by "${author}" added`
+        )
+      );
+      setTimeout(() => dispatch(clearNotification()), 3000);
+
+      props.toggleRef.current.toggleVisibility();
+    } catch (error) {
+      dispatch(setNotification("unsuccessful", error.response.data.error));
+      setTimeout(() => dispatch(clearNotification()), 3000);
+    }
   };
 
   return (
@@ -25,31 +44,13 @@ const NewBlogForm = ({ addBlog }) => {
       <h2>Create new blog</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          Title{" "}
-          <input
-            type="text"
-            id="new-blog-title"
-            value={newBlogTitle}
-            onChange={({ target }) => setNewBlogTitle(target.value)}
-          />
+          Title <input type="text" id="new-blog-title" name="title" />
         </div>
         <div>
-          Author{" "}
-          <input
-            type="text"
-            id="new-blog-author"
-            value={newBlogAuthor}
-            onChange={({ target }) => setNewBlogAuthor(target.value)}
-          />
+          Author <input type="text" id="new-blog-author" name="author" />
         </div>
         <div>
-          Url{" "}
-          <input
-            type="text"
-            id="new-blog-url"
-            value={newBlogUrl}
-            onChange={({ target }) => setNewBlogUrl(target.value)}
-          />
+          Url <input type="text" id="new-blog-url" name="url" />
         </div>
         <div>
           <button type="submit" id="create-new-blog-button">
@@ -59,10 +60,6 @@ const NewBlogForm = ({ addBlog }) => {
       </form>
     </>
   );
-};
-
-NewBlogForm.propTypes = {
-  addBlog: PropTypes.func.isRequired,
 };
 
 export default NewBlogForm;

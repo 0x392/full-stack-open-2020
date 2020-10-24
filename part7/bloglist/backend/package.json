@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "test": "jest --runInBand --verbose",
-    "start:test": "cross-env NODE_ENV=test node index.js"
+    "start:test": "cross-env NODE_ENV=test node index.js",
+    "init-db": "node ./utils/db/init.js"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +24,7 @@
     "nodemon": "^2.0.2"
   },
   "devDependencies": {
+    "axios": "^0.21.0",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "mongoose-unique-validator": "^2.0.3",

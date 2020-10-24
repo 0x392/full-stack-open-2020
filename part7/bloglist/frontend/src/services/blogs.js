@@ -32,7 +32,7 @@ const like = async (blog) => {
 };
 
 const remove = async (blog) => {
-  axios.delete(`${baseUrl}/${blog.id}`);
+  await axios.delete(`${baseUrl}/${blog.id}`);
 };
 
 export default { setToken, getAll, create, like, remove };

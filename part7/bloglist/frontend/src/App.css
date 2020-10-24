@@ -61,8 +61,11 @@ button.sign-out {
 }
 
 .blog-row {
-  color: red;
   font-size: 1.15rem;
+}
+
+.blog-row a {
+  text-decoration: none;
 }
 
 .blog-row button,
@@ -77,11 +80,19 @@ button.sign-out {
   outline: 0;
   padding: 10px 20px;
   text-transform: uppercase;
+  opacity: 0.5;
+  transition: cubic-bezier(0.215, 0.61, 0.355, 1) 0.5s;
+}
+
+.blog-row button:hover,
+button.sign-out:hover {
+  opacity: 1;
 }
 
 .blog-row button.remove {
   background: rgb(255, 235, 230);
   color: rgb(255, 10, 10);
+  margin-left: 10px;
 }
 
 .blog-title,

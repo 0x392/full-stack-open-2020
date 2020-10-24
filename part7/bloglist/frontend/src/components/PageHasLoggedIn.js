@@ -12,6 +12,7 @@ import {
   clearNotification,
 } from "../reducers/notificationReducer";
 import blogService from "../services/blogs";
+import BlogDetail from "./BlogDetail";
 
 const PageHasLoggedIn = () => {
   const name = useSelector((state) => state.user.name);
@@ -36,6 +37,9 @@ const PageHasLoggedIn = () => {
         Sign out
       </button>
       <Switch>
+        <Route path="/blogs/:id">
+          <BlogDetail />
+        </Route>
         <Route path="/users/:id">
           <UserInfo />
         </Route>

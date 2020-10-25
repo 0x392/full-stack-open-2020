@@ -33,3 +33,10 @@ Authorization: bearer <token>
 ### 4. DELETE BLOG
 DELETE http://localhost:3001/api/blogs/<id>
 Authorization: bearer <token>
+### 5. COMMENT A BLOG
+POST http://localhost:3001/api/blogs/5f943d8e8ae8d54cdd8961db/comments
+Content-Type: application/json
+
+{
+  "comment": "foo"
+}

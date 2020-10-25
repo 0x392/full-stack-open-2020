@@ -64,13 +64,23 @@ router.delete("/:id", async (request, response) => {
     (blog) => blog.id.toString() !== request.params.id.toString()
   );
   await user.save();
-  response.status(204).end();
+  response.sendStatus(204);
   */
 
   // With using `populate(...)` in router of `GET /api/users`,
   // we don't need to handle `user.blogs`
   await Blog.findByIdAndDelete(request.params.id);
-  response.status(204).end();
+  response.sendStatus(204);
+});
+
+router.post("/:id/comments", async (request, response) => {
+  const { comment } = request.body;
+
+  const blog = await Blog.findById(request.params.id);
+  blog.comments = blog.comments.concat(comment);
+  await blog.save();
+
+  response.sendStatus(201);
 });
 
 module.exports = router;

@@ -19,7 +19,6 @@ router.post("/", async (request, response) => {
   response
     .status(200)
     .json({ name: user.name, username: user.username, token });
-  response.sendStatus(200);
 });
 
 module.exports = router;

@@ -4,10 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "test": "jest --runInBand --verbose",
-    "start:test": "cross-env NODE_ENV=test node index.js",
-    "init-db": "node ./utils/db/init.js"
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",

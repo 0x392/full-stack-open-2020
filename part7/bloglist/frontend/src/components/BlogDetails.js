@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router-dom";
+import Comments from "./Comments";
 import { setBlogs } from "../reducers/blogReducer";
 import {
   clearNotification,
@@ -54,6 +55,7 @@ const BlogDetails = () => {
         <button onClick={handleLike}>Like</button>
         <button onClick={handleRemove}>Remove</button>
       </div>
+      <Comments blog={matchedBlog} />
     </div>
   );
 };

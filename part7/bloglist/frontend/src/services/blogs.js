@@ -33,4 +33,8 @@ const like = async ({ id, title, author, url, likes, user }) => {
   return await axios.put(`${baseUrl}/${id}`, updatedBlog);
 };
 
-export default { setToken, getAll, create, remove, like };
+const addComment = async (id, comment) => {
+  return await axios.post(`${baseUrl}/${id}/comments`, { comment });
+};
+
+export default { setToken, getAll, create, remove, like, addComment };

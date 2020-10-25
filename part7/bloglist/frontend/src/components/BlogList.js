@@ -1,6 +1,21 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import BlogListItem from "./BlogListItem";
+import { Link } from "react-router-dom";
+
+const BlogListItem = ({ blog, idx }) => (
+  <div>
+    <div>{idx + 1}</div>
+    <div>
+      <div>{blog.title}</div>
+      <div>{blog.author}</div>
+      <div>
+        <Link to={`/blogs/${blog.id}`}>
+          <button>Show details</button>
+        </Link>
+      </div>
+    </div>
+  </div>
+);
 
 const BlogList = () => {
   const blogs = useSelector((state) => state.blogs);

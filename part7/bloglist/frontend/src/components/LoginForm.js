@@ -1,50 +1,56 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import {
-  setNotification,
   clearNotification,
+  setNotification,
 } from "../reducers/notificationReducer";
+import { setLoggedInUser } from "../reducers/sessionReducer";
 import blogService from "../services/blogs";
 import userService from "../services/users";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
 
-  const handleLogin = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const username = event.target.username.value;
     const password = event.target.password.value;
-    event.target.username.value = "";
-    event.target.password.value = "";
+    event.persist();
 
     try {
-      const user = await userService.login({ username, password });
+      const loggedInUser = await userService.login({ username, password });
 
-      blogService.setToken(user.token);
-      window.localStorage.setItem("blog-app-user", JSON.stringify(user));
-      dispatch({ type: "LOGIN", data: { user } });
+      dispatch(setLoggedInUser(loggedInUser));
+      blogService.setToken(loggedInUser.token);
+      window.localStorage.setItem(
+        "bloglist-user",
+        JSON.stringify(loggedInUser)
+      );
 
-      dispatch(setNotification("successful", `Signed in as ${username}`));
+      event.target.username.value = "";
+      event.target.password.value = "";
+
+      dispatch(setNotification("success", `Hello, ${loggedInUser.name}`));
       setTimeout(() => dispatch(clearNotification()), 3000);
     } catch (error) {
-      dispatch(setNotification("unsuccessful", error.response.data.error));
+      dispatch(setNotification("error", error.response.data.message));
       setTimeout(() => dispatch(clearNotification()), 3000);
     }
   };
 
   return (
-    <form onSubmit={handleLogin} id="login-form">
-      <h2>Sign In to the Application</h2>
+    <form onSubmit={handleSubmit}>
+      <h2>Sign in</h2>
       <div>
         Username <input type="text" name="username" />
       </div>
       <div>
         Password <input type="text" name="password" />
       </div>
-      <button type="submit" id="login-button">
-        Sign in
-      </button>
+      <div>
+        <button type="submit">Login</button>
+      </div>
     </form>
   );
 };

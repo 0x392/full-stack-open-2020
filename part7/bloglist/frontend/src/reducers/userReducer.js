@@ -1,9 +1,9 @@
-const reducer = (state = null, action) => {
+export const initializeUsers = (users) => ({ type: "INIT_USERS", data: users });
+
+const reducer = (state = [], action) => {
   switch (action.type) {
-    case "LOGIN":
-      return action.data.user;
-    case "LOGOUT":
-      return null;
+    case "INIT_USERS":
+      return action.data;
     default:
       return state;
   }

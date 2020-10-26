@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const BlogListItem = ({ blog, idx }) => (
-  <div>
-    <div>{idx + 1}</div>
+  <div className="blog-list-item">
+    <div className="blog-list-item-idx">{idx + 1}</div>
     <div>
       <div>{blog.title}</div>
       <div>{blog.author}</div>

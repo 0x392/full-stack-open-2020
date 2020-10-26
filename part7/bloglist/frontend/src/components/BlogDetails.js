@@ -44,19 +44,21 @@ const BlogDetails = () => {
   };
 
   return (
-    <div>
-      <h2>Blog: {matchedBlog.title}</h2>
-      <div>
-        <a href={matchedBlog.url}>{matchedBlog.url}</a>
-      </div>
-      <div>{matchedBlog.likes} likes</div>
-      <div>{matchedBlog.author}</div>
-      <div>
-        <button onClick={handleLike}>Like</button>
-        <button onClick={handleRemove}>Remove</button>
-      </div>
-      <Comments blog={matchedBlog} />
-    </div>
+    <>
+      <header>Blog: {matchedBlog.title}</header>
+      <main>
+        <div>
+          <a href={matchedBlog.url}>{matchedBlog.url}</a>
+        </div>
+        <div>{matchedBlog.likes} likes</div>
+        <div>{matchedBlog.author}</div>
+        <div>
+          <button onClick={handleLike}>Like</button>
+          <button onClick={handleRemove}>Remove</button>
+        </div>
+        <Comments blog={matchedBlog} />
+      </main>
+    </>
   );
 };
 

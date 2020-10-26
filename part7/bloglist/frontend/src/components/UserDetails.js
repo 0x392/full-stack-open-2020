@@ -13,17 +13,19 @@ const UserDetails = () => {
   if (!matchedUser) return <div>Error: User not found</div>;
 
   return (
-    <div>
-      <h2>User: {matchedUser.name}</h2>
-      <h3>Added Blogs</h3>
-      <ul>
-        {matchedUser.blogs.map((blog) => (
-          <li key={blog.id}>
-            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <header>User: {matchedUser.name}</header>
+      <main>
+        <h3>Added Blogs</h3>
+        <ul>
+          {matchedUser.blogs.map((blog) => (
+            <li key={blog.id}>
+              <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            </li>
+          ))}
+        </ul>
+      </main>
+    </>
   );
 };
 

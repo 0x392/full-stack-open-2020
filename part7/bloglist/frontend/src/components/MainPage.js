@@ -40,7 +40,7 @@ const Navigation = ({ user }) => {
             <Link to="/users">Users</Link>
           </li>
           <li>
-            <button onClick={handleLogout}>Log out</button>
+            <button onClick={handleLogout}>Logout</button>
           </li>
         </ul>
       </div>
@@ -64,16 +64,23 @@ const MainPage = () => {
           <UserDetails />
         </Route>
         <Route path="/users">
-          <h2>Users</h2>
-          <UsersTable />
+          <header>Users</header>
+          <main>
+            <UsersTable />
+          </main>
         </Route>
         <Route path="/">
-          <h2>Blogs</h2>
-          <h3>Create a Blog</h3>
-          <Togglable buttonLabel="Create a blog" ref={toggleRef}>
-            <CreateBlogForm toggleRef={toggleRef} />
-          </Togglable>
-          <BlogList />
+          <header>Blogs</header>
+          <main>
+            <h3>Create a Blog</h3>
+            <div className="main-row">
+              <Togglable buttonLabel="Create a blog" ref={toggleRef}>
+                <CreateBlogForm toggleRef={toggleRef} />
+              </Togglable>
+            </div>
+            <hr />
+            <BlogList />
+          </main>
         </Route>
       </Switch>
     </>

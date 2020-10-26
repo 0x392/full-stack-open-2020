@@ -1,0 +1,32 @@
+* {
+  outline: none;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  border: 0;
+  padding: 0;
+  background: none;
+}
+
+h2,
+h3 {
+  margin: 0;
+}
+
+hr {
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
